@@ -15,18 +15,18 @@ import {
 
 export function RegisterCard() {
     return (
-        <Card className="w-full max-w-xs rounded-1xl border-0 bg-white shadow-1xl">
+        <div className="w-full max-w-sm bg-transparent shadow-none border-none">
             <CardHeader className="space-y-0 text-center">
 
                 <div className="flex justify-center mb-2">
                 <Image
                     src="/images/logo.png"
                     alt="ApplyFlow AI"
-                    width={60}
-                    height={60}
+                    width={80}
+                    height={80}
                 />
             </div>
-                <CardTitle className="text-1g font-bold text-slate-900">
+                <CardTitle className="text-lg font-bold text-slate-900">
                     Create Your ApplyFlow AI Account
                 </CardTitle>
 
@@ -50,6 +50,6 @@ export function RegisterCard() {
                     </Link>
                 </p>
             </CardFooter>
-        </Card>
+        </div>
     );
 }

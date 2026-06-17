@@ -14,19 +14,18 @@ import {
 
 export function LoginCard() {
     return (
-        <Card className="w-full max-w-xs rounded-3x1 border-0 bg-white shadow-2xl">
+        <div className="w-full max-w-md bg-transparent shadow-none border-none">
             <CardHeader className="space-y-1 text-center">
-
                 <div className="flex justify-center">
                     <Image
                         src="/images/logo.png"
                         alt="ApplyFlow AI"
-                        width={55}
-                        height={55}
+                        width={80}
+                        height={80}
                     />
                 </div>
 
-                <CardTitle className="text-1g font-bold text-slate-900">
+                <CardTitle className="text-lg font-bold text-slate-900">
                     Welcome Back to ApplyFlow AI
                 </CardTitle>
 
@@ -51,6 +50,6 @@ export function LoginCard() {
                     </Link>
                 </p>
             </CardFooter>
-        </Card>
+        </div>
     );
 }
