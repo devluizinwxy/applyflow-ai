@@ -1,0 +1,173 @@
+"use client";
+
+import { useState } from "react";
+import { useDashboard } from "@/hooks/use-dashboard";
+import { Skeleton } from "@/components/ui/skeleton";
+import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
+import { Database, Rocket, ExternalLink, X } from "lucide-react";
+import { ResponsiveContainer, BarChart, Bar, PieChart, Pie, Cell } from "recharts";
+
+// Nossos componentes desacoplados
+import { ApplicationsModal } from "./modals/applications-modal";
+import { AutomationModal } from "./modals/automation-modal";
+
+// CORREÇÃO 1: Importando do nome correto do arquivo que é apenas './data'
+import { mockActivities, miniBarData, ActivityItem } from "./data";
+
+export function DashboardView() {
+  const { metrics, isLoading } = useDashboard();
+  
+  const [isApplicationsOpen, setIsApplicationsOpen] = useState(false);
+  const [isAutomationOpen, setIsAutomationOpen] = useState(false);
+  const [selectedActivity, setSelectedActivity] = useState<ActivityItem | null>(null);
+
+  if (isLoading) {
+    return (
+      <div className="space-y-6">
+        <div className="grid gap-6 md:grid-cols-3">
+          <Skeleton className="h-[160px] w-full rounded-2xl" />
+          <Skeleton className="h-[160px] w-full rounded-2xl" />
+          <Skeleton className="h-[160px] w-full rounded-2xl" />
+        </div>
+        <div className="grid gap-6 grid-cols-1 lg:grid-cols-12">
+          <Skeleton className="h-[350px] lg:col-span-7 rounded-2xl" />
+          <Skeleton className="h-[200px] lg:col-span-5 rounded-2xl" />
+        </div>
+      </div>
+    );
+  }
+
+  const successRate = metrics?.successRate || 68;
+  const pieData = [{ value: successRate }, { value: 100 - successRate }];
+
+  return (
+    <div className="space-y-8">
+      {/* Header */}
+      <div className="flex flex-col sm:flex-row justify-between sm:items-center gap-4">
+        <h1 className="text-3xl font-bold tracking-tight text-slate-900">Dashboard</h1>
+        <div className="flex items-center gap-2 bg-[#e8f7ed] border border-[#bbf7d0] rounded-full px-4 py-1.5 self-start sm:self-auto">
+          <span className="h-2.5 w-2.5 rounded-full bg-[#22c55e] animate-pulse" />
+          <span className="text-sm font-semibold text-[#166534]">
+            System Status: <span className="font-bold">Active (Running)</span>
+          </span>
+        </div>
+      </div>
+
+      {/* Grid de 3 Cards */}
+      <div className="grid gap-6 md:grid-cols-3">
+        <div 
+          onClick={() => setIsApplicationsOpen(true)}
+          className="bg-white rounded-2xl border border-slate-200/60 p-6 shadow-sm flex flex-col justify-between h-[175px] cursor-pointer hover:border-blue-400 hover:shadow-md transition-all group duration-200"
+        >
+          <div>
+            <div className="flex justify-between items-center">
+              <h3 className="text-sm font-semibold text-slate-600 group-hover:text-blue-600 transition-colors">
+                Applications Sent (This Month)
+              </h3>
+              <ExternalLink className="h-3.5 w-3.5 text-slate-400 opacity-0 group-hover:opacity-100 transition-opacity" />
+            </div>
+            <p className="text-4xl font-bold text-slate-900 mt-2 tracking-tight">
+              {(metrics?.totalApplied || 1245).toLocaleString()}
+            </p>
+            <div className="inline-flex items-center gap-1 bg-[#e8f7ed] text-[#166534] text-xs font-bold px-2 py-0.5 rounded-md mt-2">
+              ↑ +15% vs last month
+            </div>
+          </div>
+          <div className="h-8 w-full mt-2">
+            <ResponsiveContainer width="100%" height="100%">
+              <BarChart data={miniBarData}>
+                <Bar dataKey="v" fill="#38bdf8" radius={[2, 2, 0, 0]} barSize={10} />
+              </BarChart>
+            </ResponsiveContainer>
+          </div>
+        </div>
+
+        {/* Card 2 */}
+        <div className="bg-white rounded-2xl border border-slate-200/60 p-6 shadow-sm flex items-center justify-between h-[175px]">
+          <div className="flex flex-col justify-between h-full py-1">
+            <h3 className="text-sm font-semibold text-slate-600">Active Automations</h3>
+            <p className="text-4xl font-bold text-slate-900 tracking-tight">3 Active</p>
+            <div className="flex items-center gap-1.5 text-xs text-slate-500 bg-slate-100 px-2 py-1 rounded-full w-fit font-medium">
+              <span className="h-1.5 w-1.5 rounded-full bg-slate-400" /> 5 Paused
+            </div>
+          </div>
+          <Database className="h-14 w-14 text-slate-300 stroke-[1.2]" />
+        </div>
+
+        {/* Card 3 */}
+        <div className="bg-white rounded-2xl border border-slate-200/60 p-6 shadow-sm flex items-center justify-between h-[175px]">
+          <div className="flex flex-col justify-between h-full py-1">
+            <h3 className="text-sm font-semibold text-slate-600">Average Success Rate</h3>
+            <p className="text-4xl font-bold text-slate-900 tracking-tight">{successRate}%</p>
+            <p className="text-xs text-slate-500 font-medium">92 total offers</p>
+          </div>
+          <div className="h-20 w-20 relative flex items-center justify-center">
+            <ResponsiveContainer width="100%" height="100%">
+              <PieChart>
+                <Pie data={pieData} cx="50%" cy="50%" innerRadius={24} outerRadius={34} startAngle={90} endAngle={-270} dataKey="value">
+                  <Cell fill="#3b82f6" strokeWidth={0} />
+                  <Cell fill="#e2e8f0" strokeWidth={0} />
+                </Pie>
+              </PieChart>
+            </ResponsiveContainer>
+          </div>
+        </div>
+      </div>
+
+      {/* Seção Inferior */}
+      <div className="grid gap-6 grid-cols-1 lg:grid-cols-12 items-start">
+        <div className="bg-white rounded-2xl border border-slate-200/60 p-6 shadow-sm lg:col-span-7">
+          <h3 className="text-lg font-bold text-slate-900 mb-1">Recent Activity</h3>
+          <p className="text-sm text-slate-400 mb-4">Clique em uma linha para inspecionar os detalhes.</p>
+          
+          <div className="space-y-3 max-h-[320px] overflow-y-auto pr-1">
+            {/* CORREÇÃO 2: Tipando explicitamente o item (act: ActivityItem) para matar o erro de 'any' do eslint */}
+            {mockActivities.map((act: ActivityItem) => (
+              <div
+                key={act.id}
+                onClick={() => setSelectedActivity(act)}
+                className="flex items-center justify-between p-2.5 hover:bg-slate-50 rounded-xl transition-colors border border-transparent hover:border-slate-100 cursor-pointer group"
+              >
+                <div className="flex items-center gap-3">
+                  <div className={`p-2 rounded-full ${act.bgIcon}`}>{act.icon}</div>
+                  <div>
+                    <p className="text-sm text-slate-700 font-medium group-hover:text-blue-600 transition-colors">{act.title}</p>
+                    <span className="text-xs text-slate-400">{act.time}</span>
+                  </div>
+                </div>
+                <Badge className={`${act.badgeClass} text-white font-bold text-xs border-transparent shadow-none`}>{act.type}</Badge>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        <div className="lg:col-span-5 flex flex-col items-center justify-center py-14 border border-dashed border-slate-300/80 rounded-2xl space-y-3.5 self-stretch">
+          <Button onClick={() => setIsAutomationOpen(true)} className="bg-[#3b82f6] hover:bg-[#2563eb] text-white font-semibold text-md px-6 py-5 rounded-xl shadow-sm flex items-center gap-2.5 active:scale-95 transition-transform">
+            <Rocket className="h-4 w-4 fill-white" /> Start New Automation
+          </Button>
+          <p className="text-xs text-slate-400 font-medium">Engine is ready. Last config: 2h ago.</p>
+        </div>
+      </div>
+
+      <ApplicationsModal isOpen={isApplicationsOpen} onClose={() => setIsApplicationsOpen(false)} />
+      <AutomationModal isOpen={isAutomationOpen} onClose={() => setIsAutomationOpen(false)} />
+
+      {selectedActivity && (
+        <div className="fixed inset-0 bg-slate-900/40 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+          <div className="bg-white rounded-2xl max-w-md w-full p-6 shadow-xl relative animate-in fade-in zoom-in-95 duration-150">
+            <button onClick={() => setSelectedActivity(null)} className="absolute right-4 top-4 text-slate-400 hover:text-slate-600 p-1 rounded-lg">
+              <X className="h-5 w-5" />
+            </button>
+            <div className="space-y-4">
+              <Badge className={`${selectedActivity.badgeClass} text-white font-bold`}>{selectedActivity.type}</Badge>
+              <h3 className="text-lg font-bold text-slate-900">{selectedActivity.title}</h3>
+              <div className="p-4 bg-slate-50 rounded-xl text-sm text-slate-600">{selectedActivity.details}</div>
+              <Button onClick={() => setSelectedActivity(null)} className="w-full bg-slate-100 hover:bg-slate-200 text-slate-800 rounded-xl">Fechar</Button>
+            </div>
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
