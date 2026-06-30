@@ -119,7 +119,7 @@ export default function ApplicationsPage() {
               Your Job Applications
             </p>
 
-            <h1 className="text-4xl font-bold text-slate-900">
+            <h1 className="text-4xl font-bold text-white">
               Job Tracking
             </h1>
           </div>
