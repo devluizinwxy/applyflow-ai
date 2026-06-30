@@ -40,7 +40,7 @@ export function LoginCard() {
             </CardContent>
 
             <CardFooter className="justify-center">
-                <p className="text-sm text-slate-500">
+                <p className="text-sm text-slate-500 dark:text-slate-300">
                     Don't have an account?{" "}
                     <Link
                         href="/register"

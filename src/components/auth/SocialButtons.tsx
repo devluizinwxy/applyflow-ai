@@ -1,5 +1,5 @@
+import { FcGoogle } from "react-icons/fc";
 import {
-    FaGoogle,
     FaApple,
     FaLinkedin,
     FaFacebook,
@@ -19,11 +19,15 @@ export function SocialButtons() {
           rounded-md
           border
           border-slate-200
+          bg-white
           text-sm
+          text-black
+          cursor-pointer
+          transition-colors
           hover:bg-slate-50
         "
             >
-                <FaGoogle />
+                <FcGoogle size={19} />
                 Sign in with Google
             </button>
 
@@ -38,11 +42,15 @@ export function SocialButtons() {
           rounded-md
           border
           border-slate-200
+          bg-white
           text-sm
+          text-black
+          cursor-pointer
+          transition-colors
           hover:bg-slate-50
         "
             >
-                <FaApple />
+                <FaApple size={19} />
                 Sign in with Apple
             </button>
 
@@ -57,11 +65,18 @@ export function SocialButtons() {
           rounded-md
           border
           border-slate-200
+          bg-white
           text-sm
+          text-black
+          cursor-pointer
+          transition-colors
           hover:bg-slate-50
         "
             >
-                <FaLinkedin />
+                <FaLinkedin
+                    size={19}
+                    className="text-[#0A66C2]"
+                />
                 Sign in with LinkedIn
             </button>
 
@@ -76,11 +91,18 @@ export function SocialButtons() {
           rounded-md
           border
           border-slate-200
+          bg-white
           text-sm
+          text-black
+          cursor-pointer
+          transition-colors
           hover:bg-slate-50
         "
             >
-                <FaFacebook />
+                <FaFacebook
+                    size={19}
+                    className="text-[#1877F2]"
+                />
                 Sign in with Facebook
             </button>
         </div>
