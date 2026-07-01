@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { FileText, MoreVertical, Upload, Plus, Trash2, Download, Eye, X } from "lucide-react";
 
 export default function ResumeUploader() {
@@ -12,6 +12,9 @@ export default function ResumeUploader() {
   const [activeMenuId, setActiveMenuId] = useState<number | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [newCVName, setNewCVName] = useState("");
+  
+  // Referência para acionar o input escondido do PC
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   const toggleMenu = (id: number) => {
     setActiveMenuId(activeMenuId === id ? null : id);
@@ -29,6 +32,24 @@ export default function ResumeUploader() {
       }]);
       setNewCVName("");
       setIsModalOpen(false);
+    }
+  };
+
+  // Função que roda quando você escolhe um arquivo do PC
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      // Converte o tamanho para MB amigável
+      const fileSizeMB = (file.size / (1024 * 1024)).toFixed(1);
+      const fileExt = file.name.split('.').pop() || 'cv';
+
+      setResumes([...resumes, {
+        id: Date.now(),
+        name: file.name.replace(`.${fileExt}`, ""),
+        size: `${fileSizeMB} MB`,
+        ext: `${fileExt}.cv`,
+        active: false
+      }]);
     }
   };
 
@@ -78,9 +99,9 @@ export default function ResumeUploader() {
                 <MoreVertical size={18} />
               </button>
 
-              {/* Telinha Pequena de Opções (Menu Flutuante Customizado) */}
+              {/* Menu Flutuante das Opções */}
               {activeMenuId === cv.id && (
-                <div className="absolute right-0 mt-2 w-40 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl shadow-xl py-1.5 z-50 animate-in fade-in slide-in-from-top-1 duration-100">
+                <div className="absolute right-0 mt-2 w-40 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl shadow-xl py-1.5 z-50">
                   <div className="px-3 py-1 text-[10px] font-bold uppercase tracking-wider text-slate-400 dark:text-slate-500">
                     CV Actions
                   </div>
@@ -109,17 +130,29 @@ export default function ResumeUploader() {
           </div>
         ))}
 
-        {/* Zona de Upload */}
-        <div className="h-56 border-2 border-dashed border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800/40 rounded-3xl flex flex-col items-center justify-center gap-4 cursor-pointer hover:border-sky-500 dark:hover:border-sky-400 transition-colors">
+        {/* Input Invisível para abrir a janela do PC */}
+        <input 
+          type="file" 
+          ref={fileInputRef}
+          onChange={handleFileChange}
+          accept=".pdf,.doc,.docx"
+          className="hidden" 
+        />
+
+        {/* Zona de Upload Interativa */}
+        <div 
+          onClick={() => fileInputRef.current?.click()}
+          className="h-56 border-2 border-dashed border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800/40 rounded-3xl flex flex-col items-center justify-center gap-4 cursor-pointer hover:border-sky-500 dark:hover:border-sky-400 transition-colors"
+        >
           <Upload size={28} className="text-slate-400" />
           <div className="text-center">
             <h3 className="text-base font-semibold text-slate-900 dark:text-white">Upload profile</h3>
-            <p className="text-sm text-slate-500 dark:text-slate-400 mt-1">Drag & drop files here</p>
+            <p className="text-sm text-slate-500 dark:text-slate-400 mt-1">Click to select files from PC</p>
           </div>
         </div>
       </div>
 
-      {/* Janelinha (Modal) para Adicionar Novo Currículo */}
+      {/* Modal para Adicionar Manual */}
       {isModalOpen && (
         <div className="fixed inset-0 bg-black/40 backdrop-blur-sm flex items-center justify-center z-50 p-4">
           <div className="bg-white dark:bg-slate-800 rounded-2xl p-6 w-full max-w-md border border-slate-200 dark:border-slate-700 shadow-xl">
