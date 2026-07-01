@@ -3,14 +3,13 @@
 import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
-import { LayoutDashboard, Settings2, FileText, User, Bot, Settings } from "lucide-react";
+import { LayoutDashboard, FileText, User, Bot, Settings } from "lucide-react";
 
 export function Sidebar() {
   const pathname = usePathname();
 
   const menuItems = [
     { name: "Dashboard", href: "/dashboard", icon: LayoutDashboard },
-    { name: "Jobs", href: "/automation", icon: Settings2 },
     { name: "Applications", href: "/applications", icon: FileText },
     { name: "Profile", href: "/profile", icon: User },
     { name: "AI Agent", href: "/ai-assistant", icon: Bot },
@@ -22,7 +21,7 @@ export function Sidebar() {
       <div className="mb-10">
         <Link href="/dashboard">
           {/* Certifique-se de que a logo.png está na pasta public/images/ */}
-        <Image src="/images/logo.PNG" alt="Logo" width={60} height={60} />
+          <Image src="/images/logo.PNG" alt="Logo" width={60} height={60} />
         </Link>
       </div>
       
