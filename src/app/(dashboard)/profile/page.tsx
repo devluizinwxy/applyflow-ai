@@ -9,60 +9,53 @@ import LanguageForm from "./_components/LanguageForm";
 export default function ProfilePage() {
   return (
     <div className="min-h-screen px-6 py-6 bg-slate-50 dark:bg-[#0f172a] transition-colors duration-300">
-
+      
       {/* Cabeçalho */}
       <div className="mb-8">
         <h1 className="text-3xl font-bold text-slate-900 dark:text-white">
           Your Profile
         </h1>
-
         <p className="mt-1 text-sm text-slate-500 dark:text-slate-400">
           Manage your professional information for job applications.
         </p>
       </div>
 
-      {/* Tabs */}
-      <div className="grid grid-cols-3 gap-10 mb-10">
-
-        {/* Personal Info */}
-        <div className="border-b border-slate-300 dark:border-slate-700">
-          <button className="pb-3 text-sm font-medium border-b-2 border-sky-500 text-sky-500">
+      {/* Identificadores das Colunas (Textos Totalmente Estáticos) */}
+      <div className="grid grid-cols-3 gap-10 mb-10 border-b border-slate-200 dark:border-slate-800 pb-3">
+        
+        {/* Coluna 1 */}
+        <div className="flex justify-start">
+          <span className="text-sm font-semibold text-slate-400 dark:text-slate-500 uppercase tracking-wider">
             Personal Info
-          </button>
+          </span>
         </div>
 
-        {/* Resume e Experience */}
-        <div className="flex justify-around border-b border-slate-300 dark:border-slate-700 text-sm text-slate-600 dark:text-slate-300">
-          <button className="pb-3 hover:text-sky-500 transition-colors">
-            Resume
-          </button>
-
-          <button className="pb-3 hover:text-sky-500 transition-colors">
-            Experience
-          </button>
+        {/* Coluna 2 */}
+        <div className="flex justify-around text-sm font-semibold text-slate-400 dark:text-slate-500 uppercase tracking-wider">
+          <span>Resume</span>
+          <span>Experience</span>
         </div>
 
-        {/* Education e Languages */}
-        <div className="flex justify-around border-b border-slate-300 dark:border-slate-700 text-sm text-slate-600 dark:text-slate-300">
-          <button className="pb-3 hover:text-sky-500 transition-colors">
-            Education
-          </button>
-
-          <button className="pb-3 hover:text-sky-500 transition-colors">
-            Languages
-          </button>
+        {/* Coluna 3 */}
+        <div className="flex justify-around text-sm font-semibold text-slate-400 dark:text-slate-500 uppercase tracking-wider">
+          <span>Education</span>
+          <span>Languages</span>
         </div>
 
       </div>
 
-      {/* Conteúdo */}
+      {/* Conteúdo das Colunas */}
       <div className="grid grid-cols-1 xl:grid-cols-3 gap-12 items-start">
 
         {/* Coluna esquerda */}
-        <ProfileForm />
+        <div>
+          <ProfileForm />
+        </div>
 
         {/* Coluna central */}
-        <ResumeUploader />
+        <div>
+          <ResumeUploader />
+        </div>
 
         {/* Coluna direita */}
         <div className="space-y-12">

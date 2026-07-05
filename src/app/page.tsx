@@ -1,9 +1,6 @@
+import { redirect } from "next/navigation";
+
 export default function HomePage() {
-  return (
-    <main className="flex min-h-screen items-center justify-center">
-      <h1 className="text-4xl font-bold">
-        ApplyFlow AI
-      </h1>
-    </main>
-  );
+  // Redireciona automaticamente para a rota de login assim que a página é acessada
+  redirect("/login");
 }
