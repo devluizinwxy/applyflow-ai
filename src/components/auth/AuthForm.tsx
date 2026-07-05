@@ -5,7 +5,7 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation"; 
-import { Eye, EyeOff } from "lucide-react";
+import { Eye, EyeOff, ArrowLeft } from "lucide-react";
 
 import {
     loginSchema,
@@ -30,6 +30,13 @@ export function AuthForm({ type }: AuthFormProps) {
     const [isLoading, setIsLoading] = useState(false);
     const [showPassword, setShowPassword] = useState(false);
     const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+    
+    // Estados para a simulação do Forgot Password
+    const [isForgotPassword, setIsForgotPassword] = useState(false);
+    const [forgotEmail, setForgotEmail] = useState("");
+    const [forgotSuccess, setForgotSuccess] = useState(false);
+    const [forgotError, setForgotError] = useState("");
+
     const router = useRouter(); 
 
     const {
@@ -68,6 +75,104 @@ export function AuthForm({ type }: AuthFormProps) {
         } finally {
             setIsLoading(false);
         }
+    }
+
+    // Função para simular o envio do e-mail de recuperação
+    async function handleForgotSubmit(e: React.FormEvent) {
+        e.preventDefault();
+        
+        if (!forgotEmail) {
+            setForgotError("Email is required");
+            return;
+        }
+        
+        // Simulação de validação simples no mesmo padrão do formulário principal
+        if (!forgotEmail.includes("@") || forgotEmail.includes(" ") || /^\d+$/.test(forgotEmail.split("@")[0])) {
+            setForgotError("Invalid email format");
+            return;
+        }
+
+        try {
+            setIsLoading(true);
+            setForgotError("");
+            await new Promise((resolve) => setTimeout(resolve, 2000));
+            setForgotSuccess(true);
+        } catch (err) {
+            console.error(err);
+        } finally {
+            setIsLoading(false);
+        }
+    }
+
+    // Renderiza a interface de recuperação de senha se o estado estiver ativo
+    if (isForgotPassword) {
+        return (
+            <div className="space-y-5">
+                <button
+                    type="button"
+                    onClick={() => {
+                        setIsForgotPassword(false);
+                        setForgotSuccess(false);
+                        setForgotEmail("");
+                        setForgotError("");
+                    }}
+                    className="flex items-center gap-2 text-sm text-slate-500 hover:text-slate-700 transition-colors"
+                >
+                    <ArrowLeft size={16} />
+                    Back to login
+                </button>
+
+                <div className="space-y-1">
+                    <h2 className="text-xl font-semibold text-slate-900">Reset Password</h2>
+                    <p className="text-sm text-slate-500">
+                        Enter your email address to receive a verification code.
+                    </p>
+                </div>
+
+                {forgotSuccess ? (
+                    <div className="rounded-lg bg-emerald-50 p-4 border border-emerald-200">
+                        <p className="text-sm text-emerald-800 font-medium">
+                            A verification code has been successfully sent to <span className="font-semibold">{forgotEmail}</span>. Please check your inbox.
+                        </p>
+                    </div>
+                ) : (
+                    /* Adicionado noValidate aqui também para bloquear a mensagem nativa do navegador */
+                    <form onSubmit={handleForgotSubmit} noValidate className="space-y-4">
+                        <div className="space-y-2">
+                            <Label htmlFor="forgotEmail">Email Address</Label>
+                            <Input
+                                id="forgotEmail"
+                                type="email"
+                                placeholder="john@gmail.com"
+                                value={forgotEmail}
+                                onChange={(e) => setForgotEmail(e.target.value)}
+                                className={`h-11 border-slate-300 text-slate-900 focus-visible:ring-cyan-500 ${
+                                    forgotError ? "border-red-500 focus-visible:ring-red-500" : ""
+                                }`}
+                            />
+                            {forgotError && (
+                                <p className="text-sm text-red-500">{forgotError}</p>
+                            )}
+                        </div>
+
+                        <Button
+                            type="submit"
+                            disabled={isLoading}
+                            className="h-11 w-full bg-cyan-500 text-white font-medium hover:bg-cyan-600"
+                        >
+                            {isLoading ? (
+                                <span className="flex items-center gap-2">
+                                    <span className="h-4 w-4 animate-spin rounded-full border-2 border-white border-t-transparent" />
+                                    Sending code...
+                                </span>
+                            ) : (
+                                "Send Verification Code"
+                            )}
+                        </Button>
+                    </form>
+                )}
+            </div>
+        );
     }
 
     return (
@@ -147,12 +252,13 @@ export function AuthForm({ type }: AuthFormProps) {
 
             {!isRegister && (
                 <div className="flex justify-end">
-                    <Link
-                        href="/forgot-password"
-                        className="text-sm text-cyan-500 hover:text-cyan-600"
+                    <button
+                        type="button"
+                        onClick={() => setIsForgotPassword(true)}
+                        className="text-sm text-cyan-500 hover:text-cyan-600 font-medium"
                     >
                         Forgot password?
-                    </Link>
+                    </button>
                 </div>
             )}
 
@@ -177,7 +283,7 @@ export function AuthForm({ type }: AuthFormProps) {
                                 type="button"
                                 onClick={() => setShowConfirmPassword(!showConfirmPassword)}
                                 className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600"
-                            >
+                    >
                                 {showConfirmPassword ? <EyeOff size={16} /> : <Eye size={16} />}
                             </button>
                         </div>
