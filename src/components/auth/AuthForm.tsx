@@ -34,10 +34,23 @@ export function AuthForm({ type }: AuthFormProps) {
         handleSubmit,
         watch,
         formState: { errors },
-    } = useForm<LoginInput & Partial<RegisterInput>>({});
+    } = useForm<LoginInput & Partial<RegisterInput>>({
+        resolver: zodResolver(isRegister ? registerSchema : loginSchema),
+        defaultValues: {
+            fullName: "",
+            email: "",
+            password: "",
+            confirmPassword: "",
+        },
+    });
 
     const password = watch("password") ?? "";
     const confirmPassword = watch("confirmPassword") ?? "";
+
+    const fullNameReg = register("fullName");
+    const emailReg = register("email");
+    const passwordReg = register("password");
+    const confirmPasswordReg = register("confirmPassword");
 
     async function onSubmit(data: LoginInput | RegisterInput) {
         try {
@@ -45,8 +58,6 @@ export function AuthForm({ type }: AuthFormProps) {
             console.log(data);
 
             await new Promise((resolve) => setTimeout(resolve, 1500));
-
-            // Redirecionamento ajustado para a rota correta do dashboard
             router.push("/dashboard");
             
         } catch (error) {
@@ -64,8 +75,13 @@ export function AuthForm({ type }: AuthFormProps) {
                     <Input
                         id="fullName"
                         placeholder="John Doe"
-                        className="h-8 border-slate-300 focus-visible:ring-cyan-500"
-                        {...register("fullName")}
+                        className={`h-8 border-slate-300 text-slate-900 focus-visible:ring-cyan-500 ${
+                            errors.fullName ? "border-red-500 focus-visible:ring-red-500" : ""
+                        }`}
+                        name={fullNameReg.name}
+                        onChange={fullNameReg.onChange}
+                        onBlur={fullNameReg.onBlur}
+                        ref={fullNameReg.ref}
                     />
                     {errors.fullName && (
                         <p className="text-sm text-red-500">
@@ -80,9 +96,14 @@ export function AuthForm({ type }: AuthFormProps) {
                 <Input
                     id="email"
                     type="email"
-                    placeholder="john@email.com"
-                    className="h-11 border-slate-300 focus-visible:ring-cyan-500"
-                    {...register("email")}
+                    placeholder="john@gmail.com"
+                    className={`h-11 border-slate-300 text-slate-900 focus-visible:ring-cyan-500 ${
+                        errors.email ? "border-red-500 focus-visible:ring-red-500" : ""
+                    }`}
+                    name={emailReg.name}
+                    onChange={emailReg.onChange}
+                    onBlur={emailReg.onBlur}
+                    ref={emailReg.ref}
                 />
                 {errors.email && (
                     <p className="text-sm text-red-500">
@@ -97,8 +118,13 @@ export function AuthForm({ type }: AuthFormProps) {
                     id="password"
                     type="password"
                     placeholder="********"
-                    className="h-8 border-slate-300 focus-visible:ring-cyan-500"
-                    {...register("password")}
+                    className={`h-8 border-slate-300 text-slate-900 focus-visible:ring-cyan-500 ${
+                        errors.password ? "border-red-500 focus-visible:ring-red-500" : ""
+                    }`}
+                    name={passwordReg.name}
+                    onChange={passwordReg.onChange}
+                    onBlur={passwordReg.onBlur}
+                    ref={passwordReg.ref}
                 />
                 {errors.password && (
                     <p className="text-sm text-red-500">
@@ -126,8 +152,13 @@ export function AuthForm({ type }: AuthFormProps) {
                             id="confirmPassword"
                             type="password"
                             placeholder="********"
-                            className="h-8 border-slate-300 focus-visible:ring-cyan-500"
-                            {...register("confirmPassword")}
+                            className={`h-8 border-slate-300 text-slate-900 focus-visible:ring-cyan-500 ${
+                                errors.confirmPassword ? "border-red-500 focus-visible:ring-red-500" : ""
+                            }`}
+                            name={confirmPasswordReg.name}
+                            onChange={confirmPasswordReg.onChange}
+                            onBlur={confirmPasswordReg.onBlur}
+                            ref={confirmPasswordReg.ref}
                         />
                         {errors.confirmPassword && (
                             <p className="text-sm text-red-500">
