@@ -5,6 +5,7 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation"; 
+import { Eye, EyeOff } from "lucide-react";
 
 import {
     loginSchema,
@@ -27,6 +28,8 @@ interface AuthFormProps {
 export function AuthForm({ type }: AuthFormProps) {
     const isRegister = type === "register";
     const [isLoading, setIsLoading] = useState(false);
+    const [showPassword, setShowPassword] = useState(false);
+    const [showConfirmPassword, setShowConfirmPassword] = useState(false);
     const router = useRouter(); 
 
     const {
@@ -68,7 +71,6 @@ export function AuthForm({ type }: AuthFormProps) {
     }
 
     return (
-        /* O segredo está aqui: noValidate desativa o balão nativo do navegador */
         <form onSubmit={handleSubmit(onSubmit)} noValidate className="space-y-5">
             {isRegister && (
                 <div className="space-y-2">
@@ -115,18 +117,27 @@ export function AuthForm({ type }: AuthFormProps) {
 
             <div className="space-y-2">
                 <Label htmlFor="password">Password</Label>
-                <Input
-                    id="password"
-                    type="password"
-                    placeholder="********"
-                    className={`h-8 border-slate-300 text-slate-900 focus-visible:ring-cyan-500 ${
-                        errors.password ? "border-red-500 focus-visible:ring-red-500" : ""
-                    }`}
-                    name={passwordReg.name}
-                    onChange={passwordReg.onChange}
-                    onBlur={passwordReg.onBlur}
-                    ref={passwordReg.ref}
-                />
+                <div className="relative">
+                    <Input
+                        id="password"
+                        type={showPassword ? "text" : "password"}
+                        placeholder="********"
+                        className={`h-8 border-slate-300 text-slate-900 pr-10 focus-visible:ring-cyan-500 ${
+                            errors.password ? "border-red-500 focus-visible:ring-red-500" : ""
+                        }`}
+                        name={passwordReg.name}
+                        onChange={passwordReg.onChange}
+                        onBlur={passwordReg.onBlur}
+                        ref={passwordReg.ref}
+                    />
+                    <button
+                        type="button"
+                        onClick={() => setShowPassword(!showPassword)}
+                        className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600"
+                    >
+                        {showPassword ? <EyeOff size={16} /> : <Eye size={16} />}
+                    </button>
+                </div>
                 {errors.password && (
                     <p className="text-sm text-red-500">
                         {String(errors.password.message)}
@@ -149,18 +160,27 @@ export function AuthForm({ type }: AuthFormProps) {
                 <>
                     <div className="space-y-2">
                         <Label htmlFor="confirmPassword">Confirm Password</Label>
-                        <Input
-                            id="confirmPassword"
-                            type="password"
-                            placeholder="********"
-                            className={`h-8 border-slate-300 text-slate-900 focus-visible:ring-cyan-500 ${
-                                errors.confirmPassword ? "border-red-500 focus-visible:ring-red-500" : ""
-                            }`}
-                            name={confirmPasswordReg.name}
-                            onChange={confirmPasswordReg.onChange}
-                            onBlur={confirmPasswordReg.onBlur}
-                            ref={confirmPasswordReg.ref}
-                        />
+                        <div className="relative">
+                            <Input
+                                id="confirmPassword"
+                                type={showConfirmPassword ? "text" : "password"}
+                                placeholder="********"
+                                className={`h-8 border-slate-300 text-slate-900 pr-10 focus-visible:ring-cyan-500 ${
+                                    errors.confirmPassword ? "border-red-500 focus-visible:ring-red-500" : ""
+                                }`}
+                                name={confirmPasswordReg.name}
+                                onChange={confirmPasswordReg.onChange}
+                                onBlur={confirmPasswordReg.onBlur}
+                                ref={confirmPasswordReg.ref}
+                            />
+                            <button
+                                type="button"
+                                onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                                className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600"
+                            >
+                                {showConfirmPassword ? <EyeOff size={16} /> : <Eye size={16} />}
+                            </button>
+                        </div>
                         {errors.confirmPassword && (
                             <p className="text-sm text-red-500">
                                 {String(errors.confirmPassword.message)}
