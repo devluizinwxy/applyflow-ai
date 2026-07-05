@@ -68,7 +68,8 @@ export function AuthForm({ type }: AuthFormProps) {
     }
 
     return (
-        <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
+        /* O segredo está aqui: noValidate desativa o balão nativo do navegador */
+        <form onSubmit={handleSubmit(onSubmit)} noValidate className="space-y-5">
             {isRegister && (
                 <div className="space-y-2">
                     <Label htmlFor="fullName">Full Name</Label>
