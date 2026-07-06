@@ -115,42 +115,42 @@ export default function ApplicationsPage() {
         {/* Header */}
         <div className="flex flex-col lg:flex-row justify-between gap-6">
           <div>
-            <p className="text-sm text-slate-500">
+            <p className="text-sm text-slate-500 dark:text-slate-400">
               Your Job Applications
             </p>
 
-            <h1 className="text-4xl font-bold text-white">
+            <h1 className="text-4xl font-bold text-slate-900 dark:text-white">
               Job Tracking
             </h1>
           </div>
 
           <div className="grid grid-cols-3 gap-4">
-            <div className="bg-white rounded-xl border border-slate-200 p-4 shadow-sm min-w-[160px]">
-              <p className="text-xs text-slate-500">
+            <div className="bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800 p-4 shadow-sm min-w-[160px]">
+              <p className="text-xs text-slate-500 dark:text-slate-400">
                 Total Applications
               </p>
 
-              <h2 className="text-3xl font-bold text-slate-900">
+              <h2 className="text-3xl font-bold text-slate-900 dark:text-slate-50">
                 {totalApplications}
               </h2>
             </div>
 
-            <div className="bg-white rounded-xl border border-slate-200 p-4 shadow-sm min-w-[140px]">
-              <p className="text-xs text-slate-500">
+            <div className="bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800 p-4 shadow-sm min-w-[140px]">
+              <p className="text-xs text-slate-500 dark:text-slate-400">
                 Pending
               </p>
 
-              <h2 className="text-3xl font-bold text-yellow-600">
+              <h2 className="text-3xl font-bold text-yellow-600 dark:text-yellow-500">
                 {pendingApplications}
               </h2>
             </div>
 
-            <div className="bg-white rounded-xl border border-slate-200 p-4 shadow-sm min-w-[140px]">
-              <p className="text-xs text-slate-500">
+            <div className="bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800 p-4 shadow-sm min-w-[140px]">
+              <p className="text-xs text-slate-500 dark:text-slate-400">
                 Interviews
               </p>
 
-              <h2 className="text-3xl font-bold text-green-600">
+              <h2 className="text-3xl font-bold text-green-600 dark:text-green-500">
                 {approvedApplications}
               </h2>
             </div>
@@ -228,25 +228,25 @@ export default function ApplicationsPage() {
           </div>
 
           {/* Tabela */}
-          <div className="mt-5 rounded-xl border overflow-hidden">
+          <div className="mt-5 rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 overflow-hidden">
             <Table>
               <TableHeader>
-                <TableRow>
-                  <TableHead>Company</TableHead>
-                  <TableHead>Job Title</TableHead>
-                  <TableHead>Status</TableHead>
-                  <TableHead>Date</TableHead>
+                <TableRow className="hover:bg-transparent border-b border-slate-200 dark:border-slate-800">
+                  <TableHead className="text-slate-500 dark:text-slate-400">Company</TableHead>
+                  <TableHead className="text-slate-500 dark:text-slate-400">Job Title</TableHead>
+                  <TableHead className="text-slate-500 dark:text-slate-400">Status</TableHead>
+                  <TableHead className="text-slate-500 dark:text-slate-400">Date</TableHead>
                 </TableRow>
               </TableHeader>
 
               <TableBody>
                 {filteredApplications.map((application) => (
-                    <TableRow key={application.id}>
-                      <TableCell className="font-medium">
+                    <TableRow key={application.id} className="border-b border-slate-200 dark:border-slate-800 hover:bg-slate-50 dark:hover:bg-slate-800/50">
+                      <TableCell className="font-medium text-slate-900 dark:text-slate-100">
                         {application.empresa}
                       </TableCell>
 
-                      <TableCell>
+                      <TableCell className="text-slate-700 dark:text-slate-300">
                         {application.cargo}
                       </TableCell>
 
@@ -254,7 +254,7 @@ export default function ApplicationsPage() {
                         {getStatusBadge(application.status)}
                       </TableCell>
 
-                      <TableCell>
+                      <TableCell className="text-slate-700 dark:text-slate-300">
                         {application.data}
                       </TableCell>
                     </TableRow>
