@@ -4,10 +4,8 @@ import Image from "next/image";
 import { AuthForm } from "./AuthForm";
 
 import {
-    Card,
     CardContent,
     CardDescription,
-    CardFooter,
     CardHeader,
     CardTitle,
 } from "@/components/ui/card";
@@ -32,24 +30,11 @@ export function LoginCard() {
                 <CardDescription className="text-slate-500">
                     Log in to automate your job applications
                 </CardDescription>
-
             </CardHeader>
 
             <CardContent>
                 <AuthForm type="login" />
             </CardContent>
-
-            <CardFooter className="justify-center">
-                <p className="text-sm text-slate-500 dark:text-slate-300">
-                    Don't have an account?{" "}
-                    <Link
-                        href="/register"
-                        className="font-medium text-sky-500 hover:text-sky-600"
-                    >
-                        Create one.
-                    </Link>
-                </p>
-            </CardFooter>
         </div>
     );
 }

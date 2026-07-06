@@ -495,6 +495,33 @@ export function AuthForm({ type }: AuthFormProps) {
                     <FaFacebook size={19} className="text-[#1877F2]" /> Sign in with Facebook
                 </button>
             </div>
+
+            {/* Link de Alternância entre Login e Cadastro totalmente limpo */}
+            <div className="text-center pt-4">
+                <p className="text-sm text-slate-500 dark:text-slate-400">
+                    {isRegister ? (
+                        <>
+                            Already have an account?{" "}
+                            <Link 
+                                href="/login" 
+                                className="font-medium text-cyan-500 hover:text-cyan-600 dark:text-cyan-400 dark:hover:text-cyan-300 underline-offset-4 hover:underline transition-colors"
+                            >
+                                Sign in
+                            </Link>
+                        </>
+                    ) : (
+                        <>
+                            Don't have an account?{" "}
+                            <Link 
+                                href="/register" 
+                                className="font-medium text-cyan-500 hover:text-cyan-600 dark:text-cyan-400 dark:hover:text-cyan-300 underline-offset-4 hover:underline transition-colors"
+                            >
+                                Create one
+                            </Link>
+                        </>
+                    )}
+                </p>
+            </div>
         </form>
     );
 }
