@@ -16,10 +16,11 @@ export function RegisterCard() {
             <CardHeader className="space-y-0 text-center">
                 <div className="flex justify-center mb-2">
                     <Image
-                        src="/images/logo.png"
+                        src="/images/logo.PNG"
                         alt="ApplyFlow AI"
                         width={80}
                         height={80}
+                        priority
                     />
                 </div>
                 

@@ -16,10 +16,11 @@ export function LoginCard() {
             <CardHeader className="space-y-1 text-center">
                 <div className="flex justify-center">
                     <Image
-                        src="/images/logo.png"
+                        src="/images/logo.PNG"
                         alt="ApplyFlow AI"
                         width={80}
                         height={80}
+                        priority
                     />
                 </div>
 
