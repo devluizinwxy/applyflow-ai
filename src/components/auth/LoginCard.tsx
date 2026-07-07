@@ -24,6 +24,7 @@ export function LoginCard() {
                     />
                 </div>
 
+
                 <CardTitle className="text-lg font-bold text-slate-900">
                     Welcome Back to ApplyFlow AI
                 </CardTitle>
