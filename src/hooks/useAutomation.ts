@@ -1,6 +1,14 @@
 import { useState, useCallback } from 'react';
-import { AutomationConfig, AutomationStatus, JobFilters, AdvancedFilters, AutomationLimits } from '@/types/automation';
+// Garantindo a importação exata dos tipos estruturados
+import { 
+  AutomationConfig, 
+  AutomationStatus, 
+  JobFilters, 
+  AdvancedFilters, 
+  AutomationLimits 
+} from '@/types/automation';
 
+// Configuração inicial com os dados mockados pré-definidos alinhados com o componente
 const initialConfig: AutomationConfig = {
   jobFilters: { 
     role: '', 
@@ -20,7 +28,8 @@ const initialConfig: AutomationConfig = {
     easyApply: true,
     lessThan10Applicants: true,
     jobsFromNetwork: true,
-    keywords: '' 
+    // Definido direto no mock inicial para o componente ler nativamente
+    keywords: 'Python,AI,Cloud' 
   },
   limits: { dailyLimit: 20 },
   status: 'inactive',
@@ -31,6 +40,7 @@ export function useAutomation() {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
+  // Atualiza os filtros de busca de vagas
   const updateJobFilters = useCallback((filters: Partial<JobFilters>) => {
     setConfig((prev: AutomationConfig) => ({
       ...prev,
@@ -38,6 +48,7 @@ export function useAutomation() {
     }));
   }, []);
 
+  // Atualiza os filtros avançados (incluindo a string de keywords)
   const updateAdvancedFilters = useCallback((filters: Partial<AdvancedFilters>) => {
     setConfig((prev: AutomationConfig) => ({
       ...prev,
@@ -45,6 +56,7 @@ export function useAutomation() {
     }));
   }, []);
 
+  // Atualiza os limites diários da automação
   const updateLimits = useCallback((limits: Partial<AutomationLimits>) => {
     setConfig((prev: AutomationConfig) => ({
       ...prev,
@@ -52,17 +64,21 @@ export function useAutomation() {
     }));
   }, []);
 
+  // Liga / Desliga o status da automação
   const updateStatus = useCallback((status: AutomationStatus) => {
     setConfig((prev: AutomationConfig) => ({ ...prev, status }));
   }, []);
 
+  // Função simulada para salvar as configurações
   const saveConfiguration = useCallback(async () => {
     setIsLoading(true);
     setError(null);
     try {
-      alert('Configurações salvas com sucesso!');
+      // Simulação de uma requisição de salvamento
+      await new Promise((resolve) => setTimeout(resolve, 600));
+      alert('Configuration saved successfully!');
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Erro ao salvar.');
+      setError(err instanceof Error ? err.message : 'An error occurred while saving.');
     } finally {
       setIsLoading(false);
     }

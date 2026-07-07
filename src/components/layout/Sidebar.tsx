@@ -17,15 +17,20 @@ export function Sidebar() {
   ];
 
   return (
-    <aside className="w-24 h-screen bg-slate-50 dark:bg-slate-900 border-r border-slate-200 dark:border-slate-800 flex flex-col items-center py-6 fixed left-0 top-0 z-50">
-      <div className="mb-10">
+    // No mobile: w-14 fixo. No desktop: w-24 fixo. h-screen garante o tamanho total do viewport.
+    <aside className="w-14 md:w-24 h-screen bg-slate-50 dark:bg-slate-900 border-r border-slate-200 dark:border-slate-800 flex flex-col items-center py-6 fixed left-0 top-0 z-50 transition-all duration-200">
+      <div className="mb-6 md:mb-10 shrink-0">
         <Link href="/dashboard">
-          {/* Certifique-se de que a logo.png está na pasta public/images/ */}
-          <Image src="/images/logo.PNG" alt="Logo" width={60} height={60} />
+          <div className="block md:hidden">
+            <Image src="/images/logo.PNG" alt="Logo" width={32} height={32} />
+          </div>
+          <div className="hidden md:block">
+            <Image src="/images/logo.PNG" alt="Logo" width={60} height={60} />
+          </div>
         </Link>
       </div>
       
-      <nav className="flex flex-col gap-6 w-full px-2">
+      <nav className="flex flex-col gap-4 md:gap-6 w-full px-1 md:px-2">
         {menuItems.map((item) => {
           const isActive = pathname.startsWith(item.href);
           const Icon = item.icon;
@@ -34,14 +39,15 @@ export function Sidebar() {
             <Link 
               key={item.href} 
               href={item.href} 
-              className={`flex flex-col items-center gap-1.5 p-2 w-full rounded-xl transition-all duration-200 ${
+              className={`flex flex-col items-center justify-center gap-1.5 p-2 w-full rounded-xl transition-all duration-200 ${
                 isActive 
                   ? "text-blue-600 bg-blue-50 dark:bg-blue-900/30 dark:text-blue-400" 
                   : "text-slate-400 hover:text-blue-500 hover:bg-slate-100 dark:hover:bg-slate-800"
               }`}
             >
-              <Icon className="w-6 h-6 stroke-[1.5]" />
-              <span className="text-[10px] font-medium tracking-wide">{item.name}</span>
+              <Icon className="w-5 h-5 md:w-6 md:h-6 stroke-[1.5] shrink-0" />
+              {/* Esconde o texto no mobile para não estourar o layout lateral */}
+              <span className="hidden md:block text-[10px] font-medium tracking-wide text-center">{item.name}</span>
             </Link>
           );
         })}
